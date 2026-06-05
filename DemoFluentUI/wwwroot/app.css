@@ -28,3 +28,11 @@ h1:focus {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+/* Hide the first two immediate DIV children of the fluent-multi-splitter
+   (the resize handles/spacers injected before the actual panes). */
+body[data-media="xs"] .fluent-multi-splitter > div:nth-child(-n+2),
+body[data-media="sm"] .fluent-multi-splitter > div:nth-child(-n+2) {
+    display: none;
+}
+
