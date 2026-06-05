@@ -1,71 +1,97 @@
 @using DemoFluentUI.Services
 @inject ExpenseService Service
 
-<EditForm Model="@Item" OnValidSubmit="@OnSubmitAsync" novalidate="true">
-    <DataAnnotationsValidator />
+<FluentDialogBody>
+    <EditForm Model="@Item" OnValidSubmit="@OnSubmitAsync" novalidate="true">
+        <DataAnnotationsValidator />
 
-    @* Description *@
-    <FluentTextInput Label="Description"
-                     @bind-Value="Item.Description"
-                     Placeholder="What did you pay for?"
-                     Required="true"
-                     Width="100%" />
-    @* Amount *@
-    <FluentNumberInput Label="Amount"
-                       TValue="decimal"
-                       @bind-Value="Item.Amount"
-                       Min="0"
-                       Max="10000"
-                       Step="10m"
-                       Width="150px">
-        <StartTemplate>
-            <FluentText>€</FluentText>
-        </StartTemplate>
-    </FluentNumberInput>
+        @* Description *@
+        <FluentTextInput Label="Description"
+                        @bind-Value="Item.Description"
+                        Placeholder="What did you pay for?"
+                        Required="true"
+                        Width="100%" />
+        @* Amount *@
+        <FluentNumberInput Label="Amount"
+                        TValue="decimal"
+                        @bind-Value="Item.Amount"
+                        Min="0"
+                        Max="10000"
+                        Step="10m"
+                        Width="150px">
+            <StartTemplate>
+                <FluentText>€</FluentText>
+            </StartTemplate>
+        </FluentNumberInput>
 
-    @* Date and Time *@
-    <FluentStack HorizontalGap="12px">
-        <FluentDatePicker Label="Date" 
-                          @bind-Value="Item.Date" />
-        <FluentTimePicker Label="Time" 
-                          @bind-Value="Item.Time" />
-    </FluentStack>
+        @* Date and Time *@
+        <FluentStack HorizontalGap="12px">
+            <FluentDatePicker Label="Date" 
+                            @bind-Value="Item.Date" />
+            <FluentTimePicker Label="Time" 
+                            @bind-Value="Item.Time" />
+        </FluentStack>
 
-    @* Category *@
-    <FluentSelect Label="Category"
-                  @bind-Value="Item.Category"
-                  Items="@Expense.AllCategories" 
-                  Width="100%" />
+        @* Category *@
+        <FluentSelect Label="Category"
+                    @bind-Value="Item.Category"
+                    Items="@Expense.AllCategories" 
+                    Width="100%" />
 
-    @* Color *@
-    <FluentColorPickerInput Label="Color"
-                            @bind-Value="Item.Color"
-                            View="ColorPickerView.ColorWheel"
-                            Width="150px" />
+        @* Color *@
+        <FluentColorPickerInput Label="Color"
+                                @bind-Value="Item.Color"
+                                View="ColorPickerView.ColorWheel"
+                                Width="150px" />
 
-    @* Actions *@
-    <FluentStack HorizontalGap="8px" Margin="@Margin.Top4">
-        <FluentButton Type="ButtonType.Submit"
-                        Appearance="ButtonAppearance.Primary"
-                        IconStart="@(new Icons.Regular.Size20.Save())">
-            Add expense
-        </FluentButton>
-        
-        <FluentSpacer />
+        @* Actions *@
+        @if (DialogInstance is null)
+        {
+            <FluentStack HorizontalGap="8px" Margin="@Margin.Top4">
+                <FluentButton Type="ButtonType.Submit"
+                                Appearance="ButtonAppearance.Primary"
+                                IconStart="@(new Icons.Regular.Size20.Save())">
+                    Add expense
+                </FluentButton>
+                
+                <FluentSpacer />
 
-        <FluentButton Type="ButtonType.Reset"
-                      OnClick="@(() => Item = new())"
-                      IconStart="@(new Icons.Regular.Size20.ArrowReset())">
-            Reset
-        </FluentButton>
-    </FluentStack>
+                <FluentButton Type="ButtonType.Reset"
+                            OnClick="@(() => Item = new())"
+                            IconStart="@(new Icons.Regular.Size20.ArrowReset())">
+                    Reset
+                </FluentButton>
+            </FluentStack>
+        }
 
-</EditForm>
+    </EditForm>
+</FluentDialogBody>
 
 @code
 {
     [Parameter, EditorRequired]
     public Expense Item { get; set; }
+
+    [CascadingParameter]
+    public IDialogInstance? DialogInstance { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (DialogInstance is not null)
+        {
+            DialogInstance.Options.Header.Title = "Edit expense";
+            
+            // Button "OK"
+            DialogInstance.Options.Footer.PrimaryAction.Label = "Save";
+            DialogInstance.Options.Footer.PrimaryAction.OnClickAsync = (dialog) 
+                => Item.IsValid() ? DialogInstance.CloseAsync(Item) : Task.CompletedTask;
+            
+            // Button "Cancel"
+            DialogInstance.Options.Footer.SecondaryAction.Label = "Cancel";
+            DialogInstance.Options.Footer.SecondaryAction.OnClickAsync = (dialog) 
+                => DialogInstance.CancelAsync();
+        }
+    }
 
     private Task OnSubmitAsync()
     {

@@ -1,6 +1,7 @@
 @page "/expenses"
 @using DemoFluentUI.Services
 @inject ExpenseService Service
+@inject IDialogService DialogService
 
 <PageTitle>Expenses</PageTitle>
 
@@ -39,7 +40,14 @@
 
                     <FluentSpacer />
 
-                    <FluentText Nowrap>@($"{item.Amount} €")</FluentText>                    
+                    <FluentText Nowrap>@($"{item.Amount} €")</FluentText>
+
+                    <FluentButton IconStart="@(new Icons.Regular.Size20.Edit())"
+                                  OnClick="@(() => OpenEditAsync(item))"
+                                  Title="Edit" />
+                    <FluentButton IconStart="@(new Icons.Regular.Size20.Delete())"
+                                  OnClick="@(() => DeleteAsync(item))"
+                                  Title="Delete" />
                 </FluentStack>
             </FluentCard>
         }
@@ -52,4 +60,33 @@
     private Expense CurrentExpense = new();
 
     override protected void OnInitialized() => Service.Changed += StateHasChanged;
+
+    private async Task DeleteAsync(Expense item)
+    {
+        var result = await DialogService.ShowConfirmationAsync(
+                            message: $"Delete '{item.Description}'?", 
+                            title: "Confirm deletion", 
+                            primaryButton: "Delete", 
+                            secondaryButton: "Cancel");
+
+        if (!result.Cancelled)
+        {
+            Service.Remove(item.Id);
+        }
+    }
+
+    private async Task OpenEditAsync(Expense item)
+    {
+        var result = await DialogService.ShowDialogAsync<EditExpenseDialog>(options =>
+        {
+            options.Parameters.Add(nameof(EditExpenseDialog.Item), item.Clone());
+            options.Header.CloseAction.Visible = true;
+            options.Alignment = DialogAlignment.End;
+        });
+
+        if (!result.Cancelled && result.Value is Expense updated)
+        {
+            Service.Update(updated);
+        }
+    }
 }
