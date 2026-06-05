@@ -10,6 +10,8 @@ builder.Services.AddRazorComponents()
 // Register Fluent UI services
 builder.Services.AddFluentUIComponents();
 
+builder.Services.AddScoped<DemoFluentUI.Services.ExpenseService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

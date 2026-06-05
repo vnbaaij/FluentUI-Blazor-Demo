@@ -1,0 +1,27 @@
+@page "/expenses"
+@using DemoFluentUI.Services
+
+<PageTitle>Expenses</PageTitle>
+
+<FluentMultiSplitter Height="var(--layout-body-height)" Width="100%" Padding="@Padding.All2">
+
+    @* Panel "New Expense" *@
+    <FluentMultiSplitterPane Size="40%" Min="320px" Padding="@Padding.All2">
+            
+        <FluentText Size="TextSize.Size600">New Expense</FluentText>
+
+        @* Edit Expense Panel *@
+        <EditExpenseDialog Item="CurrentExpense" />
+            
+    </FluentMultiSplitterPane>
+
+    @* Panel "Expenses List" *@
+    <FluentMultiSplitterPane>
+        
+    </FluentMultiSplitterPane>
+</FluentMultiSplitter>
+
+@code
+{
+    private Expense CurrentExpense = new();
+}
