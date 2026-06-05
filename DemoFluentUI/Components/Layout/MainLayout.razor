@@ -1,6 +1,45 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<FluentLayout>
+
+    <!-- Header -->
+    <FluentLayoutItem Area="@LayoutArea.Header">
+        <FluentStack VerticalAlignment="VerticalAlignment.Center">
+            <FluentLayoutHamburger />
+            <FluentText Weight="TextWeight.Bold" Size="TextSize.Size400">
+                .NET Live TV - ExpenseTracker
+            </FluentText>
+        </FluentStack>
+    </FluentLayoutItem>
+
+    <!-- Navigation -->
+    <FluentLayoutItem Area="@LayoutArea.Navigation" Width="250px">
+
+        <FluentNav Padding="@Padding.All2" Style="height: 100%;">
+            <FluentNavItem Href="/"
+                           Match="NavLinkMatch.All"
+                           IconRest="@(new Icons.Regular.Size20.Home())">
+                Home
+            </FluentNavItem>
+            <FluentNavItem Href="/not-found"
+                           IconRest="@(new Icons.Regular.Size20.RemixAdd())">
+               Expense Tracker
+            </FluentNavItem>
+        </FluentNav>
+
+    </FluentLayoutItem>
+
+    <!-- Content -->
+    <FluentLayoutItem Area="@LayoutArea.Content" Padding="@Padding.All3">
+        @Body
+    </FluentLayoutItem>
+
+    <!-- Footer -->
+    <FluentLayoutItem Area="@LayoutArea.Footer">
+        Powered by Microsoft Fluent UI Blazor @DateTime.Now.Year
+    </FluentLayoutItem>
+
+</FluentLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
