@@ -18,20 +18,29 @@
     </FluentMultiSplitterPane>
 
     @* Panel "Expenses List" *@
-    <FluentMultiSplitterPane>
+    <FluentMultiSplitterPane Padding="@Padding.All2">
+
+        @* Toolbar  *@
+        <FluentStack Padding="@Padding.Vertical2" HorizontalAlignment="HorizontalAlignment.End">
+            <FluentButton Id="importCsvButton"
+                            IconStart="@(new Icons.Regular.Size20.ArrowImport())">
+                Import CSV
+            </FluentButton>
+        </FluentStack>
+
         @foreach (var item in Service.Items)
         {
             <FluentCard Style="padding: 12px;">
                 <FluentStack Orientation="Orientation.Horizontal"
-                            VerticalAlignment="VerticalAlignment.Center"
-                            HorizontalGap="12">
+                             VerticalAlignment="VerticalAlignment.Center"
+                             HorizontalGap="12">
                     <FluentIcon Value="@(new Icons.Filled.Size24.Circle())"
                                 Color="@Color.Custom"
                                 CustomColor="@item.Color" />
 
                     <FluentStack Orientation="Orientation.Vertical"
-                                VerticalGap="2px"
-                                Width="unset">
+                                 VerticalGap="2px"
+                                 Width="unset">
                         <FluentText>@item.Description</FluentText>
                         <FluentText Color="@Color.Info"">
                             @item.Date?.ToShortDateString() · @item.Category
@@ -61,6 +70,29 @@
 
     override protected void OnInitialized() => Service.Changed += StateHasChanged;
 
+    override protected Task OnInitializedAsync()
+    {
+        return DialogService.RegisterInputFileAsync("importCsvButton", OnImportCompletedAsync, 
+            options => 
+            {
+                options.Accept = ".csv";
+                options.Multiple = false;
+            });     
+    }
+
+    private async Task OnImportCompletedAsync(IEnumerable<FluentInputFileEventArgs> files)
+    {
+        foreach (var file in files)
+        {
+            if (file.LocalFile is { } local)
+            {
+                await using var stream = local.OpenRead();
+                Service.ImportCsv(stream);
+                local.Delete();
+            }
+        }
+    }
+
     private async Task DeleteAsync(Expense item)
     {
         var result = await DialogService.ShowConfirmationAsync(
@@ -88,5 +120,10 @@
         {
             Service.Update(updated);
         }
+    }
+
+    private async Task OpenImportAsync()
+    {
+        await Task.CompletedTask;
     }
 }
