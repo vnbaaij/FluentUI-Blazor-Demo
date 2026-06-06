@@ -11,10 +11,10 @@ builder.Services.AddRazorComponents()
 builder.Services.AddFluentUIComponents(config =>
 {
     // Set default values for FluentButton component
-    config.DefaultValues.For<FluentButton>().Set(p => p.Shape, ButtonShape.Circular);
+    // config.DefaultValues.For<FluentButton>().Set(p => p.Shape, ButtonShape.Circular);
 
     // Set default values for FluentDatePicker component
-    config.DefaultValues.ForAny<FluentDatePicker<object>>().Set(p => p.Culture, System.Globalization.CultureInfo.GetCultureInfo("fr-FR"));
+    // config.DefaultValues.ForAny<FluentDatePicker<object>>().Set(p => p.Culture, System.Globalization.CultureInfo.GetCultureInfo("fr-FR"));
 });
 
 builder.Services.AddScoped<DemoFluentUI.Services.ExpenseService>();
