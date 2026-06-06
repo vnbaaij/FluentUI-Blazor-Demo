@@ -27,6 +27,10 @@ public class ExpenseService
             _items[index] = expense;
             Changed?.Invoke();
         }
+        else
+        {
+            Add(expense);
+        }
     }
 
     public void Remove(Guid id)
