@@ -14,6 +14,13 @@ see the project state at that point in the tutorial.
 The demo lives in the [DemoFluentUI](DemoFluentUI) folder and targets **.NET 10** with
 **Microsoft.FluentUI.AspNetCore.Components v5**.
 
+To update the NuGets using the Preview feed:
+
+```powershell
+dotnet add package Microsoft.FluentUI.AspNetCore.Components        -s https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json -v 5.0.0-preview.26154.1
+dotnet add package Microsoft.FluentUI.AspNetCore.Components.Charts -s https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json -v 5.0.0-preview.26154.1
+```
+
 To run the project:
 
 ```powershell
