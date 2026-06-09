@@ -8,7 +8,7 @@
         <FluentStack VerticalAlignment="VerticalAlignment.Center">
             <FluentLayoutHamburger />
             <FluentText Weight="TextWeight.Bold" Size="TextSize.Size400">
-                .NET Live TV - ExpenseTracker
+                Fluent UI Blazor Demo - ExpenseTracker
             </FluentText>
 
             <FluentSpacer />
@@ -45,7 +45,7 @@
                           Class="fluent-header-hover"
                           Title="Switch to Light/Dark theme"
                           OnClick="@(async e => await ThemeService.SwitchThemeAsync())">
-                
+
                 <FluentIcon Class="hidden-if-light"
                             Value="@(new Icons.Filled.Size20.DarkTheme().WithColor(SystemColors.Neutral.ForegroundOnBrand))" />
                 <FluentIcon Class="hidden-if-dark"
@@ -97,7 +97,7 @@
 @* Add all FluentUI Blazor Providers *@
 <FluentProviders />
 
-@code 
+@code
 {
     private async Task ApplyCustomThemeAsync(string color, bool isExact = false)
     {

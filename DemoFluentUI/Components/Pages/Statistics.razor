@@ -7,7 +7,7 @@
 <PageTitle>Statistics</PageTitle>
 
 <FluentStack Orientation="Orientation.Vertical"
-             HorizontalAlignment="HorizontalAlignment.Center"
+             HorizontalAlignment="HorizontalAlignment.Start"
              Padding="@Padding.All4"
              VerticalGap="20px">
 
@@ -21,15 +21,24 @@
     }
     else
     {
-        <FluentDonutChart ChartData="DonutData"
-                          ChartTitle="Amount by category"
-                          ValueInsideDonut="@Total.ToString("C0")"
-                          InnerRadius="55" />
+        <FluentStack Orientation="Orientation.Horizontal"
+                     Padding="@Padding.All4"
+                     VerticalGap="20px">
+            <FluentDonutChart ChartData="DonutData"
+                              ChartTitle="As a DonutChart"
+                              ValueInsideDonut="@Total.ToString("C0")"
+                              InnerRadius="55"
+                              RoundedCorners="true"
+                              AllowMultipleLegendSelection="true"
+                              Width="450px" />
 
-        <FluentHorizontalBarChartWithAxis ChartTitle="Amount by category"
-                                          ChartData="@BarData"
-                                          Width="400px"
-                                          Height="300px" />
+            <FluentHorizontalBarChartWithAxis ChartTitle="As a HorizontalBarChart"
+                                              ChartData="@BarData"
+                                              RoundedCorners="true"
+                                              AllowMultipleLegendSelection="true"
+                                              Width="400px"
+                                              Height="300px" />
+        </FluentStack>
     }
 
 </FluentStack>
