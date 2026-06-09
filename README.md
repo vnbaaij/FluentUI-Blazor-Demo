@@ -1,9 +1,9 @@
-# DotNetLive - FluentUI Blazor v5 Demo
+# Fluent UI Blazor v5 Demo
 
 This repository contains a step-by-step demo project showing how to build a
 Blazor application using **[Microsoft FluentUI Blazor v5](https://v5.fluentui-blazor.net/)**.
 
-The code is explained during the **.NET Live** video session available on YouTube:
+The code was used and explained during the **.NET Live** video session available on YouTube:
 [youtube.com/live/CRVLURJjFBk](https://www.youtube.com/live/CRVLURJjFBk).
 
 Each step is stored on its own Git branch, so you can checkout any branch to
