@@ -2,6 +2,10 @@ h1:focus {
     outline: none;
 }
 
+.fluent-layout-item[area=content] {
+    padding: 10px
+}
+
 .invalid fluent-text-input {
     outline: 1px solid var(--error);
 }
